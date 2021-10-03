@@ -1,12 +1,30 @@
 { 
     "manifest_version": 2,
-    "name": "Test",
+    "name": "Image Manipulation Detector",
     "description": "An extension to test code.",
     "version": "1.0",
+    "permissions": ["tabs","activeTab"],
+    "background": {
+      "scripts": ["background.js"]
+    },
     "content_scripts":[
         {
           "matches":["https://*/*"],
           "js": ["contentScript.js"]
         }
-    ]
+    ],
+    "browser_action": {
+      "default_icon": {
+          "16": "ico/icon_16.png",
+          "32": "ico/icon_32.png",
+          "48": "ico/icon_48.png",
+          "128": "ico/icon_128.png"
+      }
+  },
+  "icons": {
+      "16": "ico/icon_16.png",
+      "32": "ico/icon_32.png",
+      "48": "ico/icon_48.png",
+      "128": "ico/icon_128.png"
+  }
 }

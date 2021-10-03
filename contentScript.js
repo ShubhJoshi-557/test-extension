@@ -38,32 +38,56 @@ if (curr_url.includes(fb_url)) {
   var post = ".FFVAD";
 }
 //
+if(curr_url.includes(fb_url) || curr_url.includes(tw_url) || curr_url.includes(insta_url)){
+  scrollStop(function () {
+    var list = "";
+    list = document.querySelectorAll(share_btn).forEach((item) => {
+      // item.removeEventListener('click', getSrc(item));
+      let data = item.getAttribute("data-test");
+      console.log(data);
 
-scrollStop(function () {
-  var list = "";
-  list = document.querySelectorAll(share_btn).forEach((item) => {
-    // item.removeEventListener('click', getSrc(item));
-    let data = item.getAttribute("data-test");
-    console.log(data);
-
-    if (!data) {
-      console.log("DATA ENTERED")
-      item.setAttribute("data-test", "Exists");
-      item.addEventListener("click", async () => {
-        let dta = await retrieveData(item);
-        if(dta!="NOT AN IMAGE"){
-          console.log(dta)
-          var left = (screen.width/2)-(600/2);
-          var top = (screen.height/2)-(600/2);
-          let features = "menubar=yes,location=yes,resizabe=no,scrollbars=yes,status=no,height=600,,width=600,top="+top+",left="+left;
-          let no_ampersand = dta.replaceAll('&', '__monkey__')
-          window.open("http://127.0.0.1:5000/?img_url="+no_ampersand,"_blank",features);
-        }
-      });
-    }
+      if (!data) {
+        console.log("DATA ENTERED")
+        item.setAttribute("data-test", "Exists");
+        item.addEventListener("click", async () => {
+          let dta = await retrieveData(item);
+          if(dta!="NOT AN IMAGE"){
+            console.log(dta)
+            var left = (screen.width/2)-(600/2);
+            var top = (screen.height/2)-(600/2);
+            let features = "menubar=yes,location=yes,resizabe=no,scrollbars=yes,status=no,height=600,,width=600,top="+top+",left="+left;
+            let no_ampersand = dta.replaceAll('&', '__monkey__')
+            window.open("http://127.0.0.1:5000/?img_url="+no_ampersand,"_blank",features);
+          }
+        });
+      }
+    });
+    console.log("Scrolling has stopped.");
   });
-  console.log("Scrolling has stopped.");
-});
+}
+
+window.addEventListener(
+  "click",
+  function (event) {
+    if(event.target.tagName=="IMG"){
+      str = event.target.src
+      if(str.startsWith("data")){
+        return
+      }
+      else if(this.confirm("Check If This Image Is Manipulated?"))
+      {
+        let img_url = event.target.src;
+        var left = (screen.width/2)-(600/2);
+        var top = (screen.height/2)-(600/2);
+        let features = "menubar=yes,location=yes,resizabe=no,scrollbars=yes,status=no,height=600,,width=600,top="+top+",left="+left;
+        let no_ampersand = img_url.replaceAll('&', '__monkey__')
+        // window.open("http://127.0.0.1:5000/")
+        window.open("https://569e-2405-201-8-80c5-c1cf-1d56-8a7-11bd.ngrok.io/?img_url="+no_ampersand,"_blank",features);
+      }
+    }
+  },
+  false
+);
 
 async function retrieveData(item) {
   item.style.backgroundColor = "red";
